@@ -81,6 +81,12 @@ public class Menu {
 		frame.getContentPane().add(btnVenta);
 		
 		JButton btnCotizacion = new JButton("Realizar Cotización");
+		btnCotizacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Cotizaciones cotizaciones = new Cotizaciones();
+				cotizaciones.setVisible(true);
+			}
+		});
 		btnCotizacion.setBounds(273, 245, 164, 50);
 		frame.getContentPane().add(btnCotizacion);
 		

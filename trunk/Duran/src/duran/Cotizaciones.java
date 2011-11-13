@@ -22,20 +22,20 @@ import java.util.Vector;
 
 import javax.swing.ListSelectionModel;
 
-public class Ventas extends JFrame implements ActionListener {
+public class Cotizaciones extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField tFNombreCliente, tFNoProducto, tFNombreProducto, tFCantidad;
 	private DefaultTableModel dtm;
 	private JTable table;
 	private JButton btnAgregar, btnEliminar, btnRegistrar, btnCancelar;
-	private JLabel lblTotalVenta;
-	private double totalVenta = 0.00;
+	private JLabel lblTotalCotizacion;
+	private double totalCotizacion = 0.00;
 
 	/**
 	 * Create the frame.
 	 */
-	public Ventas() {
+	public Cotizaciones() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 790, 490);
 		contentPane = new JPanel();
@@ -44,7 +44,7 @@ public class Ventas extends JFrame implements ActionListener {
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
 
-		JLabel lblRealizarUnaVenta = new JLabel("Realizar una venta");
+		JLabel lblRealizarUnaVenta = new JLabel("Realizar una cotización");
 		lblRealizarUnaVenta.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRealizarUnaVenta.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblRealizarUnaVenta.setBounds(219, 12, 246, 15);
@@ -123,14 +123,14 @@ public class Ventas extends JFrame implements ActionListener {
 		btnAgregar.setBounds(632, 197, 107, 25);
 		contentPane.add(btnAgregar);
 		
-		lblTotalVenta = new JLabel("Total $");
-		lblTotalVenta.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotalVenta.setBounds(410, 380, 200, 25);
-		contentPane.add(lblTotalVenta);
+		lblTotalCotizacion = new JLabel("Total $");
+		lblTotalCotizacion.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotalCotizacion.setBounds(410, 380, 200, 25);
+		contentPane.add(lblTotalCotizacion);
 
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(this);
-		btnRegistrar.setIcon(new ImageIcon(Ventas.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-yes-4.png")));
+		btnRegistrar.setIcon(new ImageIcon(Cotizaciones.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-yes-4.png")));
 		btnRegistrar.setBounds(200, 422, 126, 25);
 		contentPane.add(btnRegistrar);
 
@@ -140,7 +140,7 @@ public class Ventas extends JFrame implements ActionListener {
 				dispose();
 			}
 		});
-		btnCancelar.setIcon(new ImageIcon(Ventas.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-no-4.png")));
+		btnCancelar.setIcon(new ImageIcon(Cotizaciones.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-no-4.png")));
 		btnCancelar.setBounds(375, 422, 126, 25);
 		contentPane.add(btnCancelar);
 	}
@@ -190,36 +190,21 @@ public class Ventas extends JFrame implements ActionListener {
 				}
 				
 				cantidad = Integer.parseInt(tFCantidad.getText());
-				int cantidadDisponible = cnx.getCantidadDisponible(noProducto);
-				
-				if(cantidadDisponible > 0) {
 					
-				    if(cantidad <= cantidadDisponible) {
-					
-					    if(!estaEnLaLista(noProducto)) {
-					        precio = cnx.getPrecioProducto(noProducto);
-					        precio *= cantidad;
-					        Object[] row = { noProducto, nombreProducto, cantidad, precio };
-					        dtm.addRow(row);
-							totalVenta += precio;
-							lblTotalVenta.setText("Total $" + totalVenta);
-					        tFNoProducto.setText("");
-					        tFNombreProducto.setText("");
-					        tFCantidad.setText("");
-					    }
-					    else {
-					    	JOptionPane.showMessageDialog(null, "El producto que elegiste ya está en la lista", "Error", JOptionPane.ERROR_MESSAGE);
-					    }
-					
-				    }
-				    else {
-					    JOptionPane.showMessageDialog(null, "La cantidad debe ser menor o igual a " + cantidadDisponible, "Error", JOptionPane.ERROR_MESSAGE);
-				    }
-				    
+			    if(!estaEnLaLista(noProducto)) {
+				    precio = cnx.getPrecioProducto(noProducto);
+					precio *= cantidad;
+					Object[] row = { noProducto, nombreProducto, cantidad, precio };
+					dtm.addRow(row);
+					totalCotizacion += precio;
+					lblTotalCotizacion.setText("Total $" + totalCotizacion);
+					tFNoProducto.setText("");
+					tFNombreProducto.setText("");
+					tFCantidad.setText("");
 				}
-				else {
-					JOptionPane.showMessageDialog(null, "El producto está agotado" + cantidadDisponible, "Error", JOptionPane.ERROR_MESSAGE);
-				}
+			    else {
+			    	JOptionPane.showMessageDialog(null, "El producto que elegiste ya está en la lista", "Error", JOptionPane.ERROR_MESSAGE);
+			    }
 				
 			} else {
 				JOptionPane.showMessageDialog(null, "Debes de introducir número o nombre del producto y la cantidad", "Error", JOptionPane.ERROR_MESSAGE);
@@ -238,18 +223,17 @@ public class Ventas extends JFrame implements ActionListener {
 			if(tFNombreCliente.getText().length() > 0) {
 				
 			    if(dtm.getRowCount() > 0) {
-				    int noVenta, noProducto, cantidad;
+				    int noCotizacion, noProducto, cantidad;
 				    Conexion cnx = new Conexion();
 				
-				    noVenta = cnx.insertarVenta(tFNombreCliente.getText(), totalVenta);
+				    noCotizacion = cnx.insertarCotizacion(tFNombreCliente.getText(), totalCotizacion);
 				    
-				    if(noVenta != -1) {
-				    
+				    if(noCotizacion != -1) {
+				    	
 				        while(dtm.getRowCount() > 0) {
 					        noProducto = Integer.parseInt(dtm.getValueAt(0, 0).toString());
 					        cantidad = Integer.parseInt(dtm.getValueAt(0, 2).toString());
-					        cnx.retirarDeInventario(noProducto, cantidad);
-					        cnx.insertarVentaProducto(noVenta, noProducto, cantidad);
+					        cnx.insertarCotizacionProducto(noCotizacion, noProducto, cantidad);
 					        dtm.removeRow(0);
 				        }
 				    
@@ -257,15 +241,14 @@ public class Ventas extends JFrame implements ActionListener {
 			            tFNoProducto.setText("");
 			            tFNombreProducto.setText("");
 			            tFCantidad.setText("");
-			            lblTotalVenta.setText("Total $");
-				        JOptionPane.showMessageDialog(null, "Venta realizada con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);				    
-			    
+			            lblTotalCotizacion.setText("Total $");
+				        JOptionPane.showMessageDialog(null, "Cotización realizada con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);				    
 				    }
 				    else {
-				    	JOptionPane.showMessageDialog(null, "La venta no se pudo realizar", "Error", JOptionPane.ERROR_MESSAGE);	
+				    	JOptionPane.showMessageDialog(null, "La cotización no se pudo realizar", "Error", JOptionPane.ERROR_MESSAGE);	
 				    }
 				    
-			    }
+				}
 			    else {
 			    	JOptionPane.showMessageDialog(null, "No hay productos en la lista", "Error", JOptionPane.ERROR_MESSAGE);
 			    }
