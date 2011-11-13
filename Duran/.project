@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/img/duran logo.png</name>
-			<type>1</type>
-			<location>/home/seguidor777/Administración del Proceso de Software/Proyecto/duran logo.png</location>
-		</link>
-	</linkedResources>
 </projectDescription>
