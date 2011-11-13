@@ -69,17 +69,23 @@ public class Menu {
 		lblMenDeOpciones.setBounds(273, 191, 171, 15);
 		frame.getContentPane().add(lblMenDeOpciones);
 		
-		JButton btnRealizar = new JButton("Realizar Venta");
-		btnRealizar.setBounds(30, 245, 171, 50);
-		frame.getContentPane().add(btnRealizar);
+		JButton btnVenta = new JButton("Realizar Venta");
+		btnVenta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Ventas ventas = new Ventas();
+				ventas.setVisible(true);
+			}
+		});
+		btnVenta.setBounds(30, 245, 171, 50);
+		frame.getContentPane().add(btnVenta);
 		
-		JButton btnRealizarCotizacion = new JButton("Realizar Cotización");
-		btnRealizarCotizacion.setBounds(273, 245, 164, 50);
-		frame.getContentPane().add(btnRealizarCotizacion);
+		JButton btnCotizacion = new JButton("Realizar Cotización");
+		btnCotizacion.setBounds(273, 245, 164, 50);
+		frame.getContentPane().add(btnCotizacion);
 		
-		JButton btnConsultarInventario = new JButton("Consultar Inventario");
-		btnConsultarInventario.setBounds(510, 245, 171, 50);
-		frame.getContentPane().add(btnConsultarInventario);
+		JButton btnInventario = new JButton("Consultar Inventario");
+		btnInventario.setBounds(510, 245, 171, 50);
+		frame.getContentPane().add(btnInventario);
 		
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
