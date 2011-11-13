@@ -46,6 +46,7 @@ public class Menu {
 		frame.setBounds(100, 100, 717, 409);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(Menu.class.getResource("/img/duran logo.png")));
