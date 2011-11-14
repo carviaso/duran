@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 public class Conexion {
@@ -28,13 +29,19 @@ public class Conexion {
 		}
 	}
 	
-	public Vector getDatosProducto(String nombreProducto) {
+	public Object[] getDatosProducto(String nombreProducto) {
 		int noProducto = 0;
 		String nombreRealProducto = null;
-		Vector resultado = new Vector();
+		
+		nombreProducto = nombreProducto.toUpperCase();
+		nombreProducto = nombreProducto.replace("Á", "A");
+		nombreProducto = nombreProducto.replace("É", "E");
+		nombreProducto = nombreProducto.replace("Í", "I");
+		nombreProducto = nombreProducto.replace("Ó", "O");
+		nombreProducto = nombreProducto.replace("Ú", "U");
 		
 		try {
-			rs = st.executeQuery("SELECT idproducto, nombreproducto FROM inventario WHERE nombreproducto LIKE '%" + nombreProducto + "%'");
+			rs = st.executeQuery("SELECT idproducto, nombreproducto FROM inventario WHERE UPPER(nombreproducto) LIKE '%" + nombreProducto + "%' ORDER BY nombreproducto ASC");
 			if(rs.first()) {
 			    noProducto = rs.getInt("idproducto");
 			    nombreRealProducto = rs.getString("nombreproducto");
@@ -43,10 +50,9 @@ public class Conexion {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		resultado.add(noProducto);
-		resultado.add(nombreRealProducto);
-		return resultado;
+
+		Object[] datosproducto = {noProducto, nombreRealProducto};
+		return datosproducto;
 	}
 	
 	public String getNombreProducto(int noProducto) {
@@ -95,6 +101,84 @@ public class Conexion {
 		}
 		
 		return cantidad;
+	}
+	
+	public Object[] getProductoPorNumero(int noProducto) {
+		String nombreProducto = null;
+		double precio = 0;
+		int cantidad = 0;
+		Object[] producto = null;
+		
+		try {
+			rs = st.executeQuery("SELECT nombreproducto, precioporkilo, cantidad FROM inventario WHERE idproducto = " + noProducto);
+			if(rs.first()) {
+			    nombreProducto = rs.getString("nombreproducto");
+			    precio = rs.getDouble("precioporkilo");
+			    cantidad = rs.getInt("cantidad");
+			    DecimalFormat df = new DecimalFormat("#.00");
+			    producto = new Object[] {noProducto, nombreProducto, df.format(precio), cantidad};
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return producto;
+	}
+	
+	public Vector getProductosPorNombre(String nombreProducto) {
+		int noProducto = 0;
+		String nombreReal;
+		double precio = 0;
+		int cantidad = 0;
+		Vector productos = new Vector();
+		
+		nombreProducto = nombreProducto.toUpperCase();
+		nombreProducto = nombreProducto.replace("Á", "A");
+		nombreProducto = nombreProducto.replace("É", "E");
+		nombreProducto = nombreProducto.replace("Í", "I");
+		nombreProducto = nombreProducto.replace("Ó", "O");
+		nombreProducto = nombreProducto.replace("Ú", "U");
+		
+		try {
+			rs = st.executeQuery("SELECT idproducto, nombreproducto, precioporkilo, cantidad FROM inventario WHERE UPPER(nombreproducto) LIKE '%" + nombreProducto + "%'");
+			while(rs.next()) {
+			    noProducto = rs.getInt("idproducto");
+			    nombreReal = rs.getString("nombreproducto");
+			    precio = rs.getDouble("precioporkilo");
+			    cantidad = rs.getInt("cantidad");
+			    DecimalFormat df = new DecimalFormat("#.00");
+			    productos.add(new Object [] {noProducto, nombreReal, "$" + df.format(precio), cantidad});
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return productos;
+	}
+	
+	public Vector getProductosPorPrecio(double precio) {
+		int noProducto = 0;
+        String nombreProducto = null;
+		int cantidad = 0;
+		Vector productos = new Vector();
+		
+		try {
+			rs = st.executeQuery("SELECT idproducto, nombreproducto, cantidad FROM inventario WHERE precioporkilo = " + precio);
+			while(rs.next()) {
+			    noProducto = rs.getInt("idproducto");
+			    nombreProducto = rs.getString("nombreproducto");
+			    cantidad = rs.getInt("cantidad");
+			    DecimalFormat df = new DecimalFormat("#.00");
+			    productos.add(new Object [] {noProducto, nombreProducto, "$" + df.format(precio), cantidad});
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return productos;
 	}
 	
 	public void retirarDeInventario(int noProducto, int cantidad) {
