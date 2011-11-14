@@ -91,6 +91,12 @@ public class Menu {
 		frame.getContentPane().add(btnCotizacion);
 		
 		JButton btnInventario = new JButton("Consultar Inventario");
+		btnInventario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Inventario inventario = new Inventario();
+				inventario.setVisible(true);
+			}
+		});
 		btnInventario.setBounds(510, 245, 171, 50);
 		frame.getContentPane().add(btnInventario);
 		

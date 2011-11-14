@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 import javax.swing.ListSelectionModel;
@@ -162,7 +163,7 @@ public class Ventas extends JFrame implements ActionListener {
 			String nombreProducto = "";
 			double precio = 0.00;
 
-			if ((tFNoProducto.getText().length() > 0 || tFNombreProducto.getText().length() > 0) && tFCantidad.getText().length() > 0) {
+			if (tFNoProducto.getText().length() > 0 || tFNombreProducto.getText().length() > 0) {
 				Conexion cnx = new Conexion();
 
 				if (tFNoProducto.getText().length() > 0) {
@@ -178,9 +179,9 @@ public class Ventas extends JFrame implements ActionListener {
 					nombreProducto = tFNombreProducto.getText();
 					
 					//Con la llamada a getDatosProducto(nombreProducto) se obtiene el no. de producto y el nombre real
-					Vector datosProducto = cnx.getDatosProducto(nombreProducto);
-					noProducto = (Integer) datosProducto.get(0);
-					nombreProducto = (String) datosProducto.get(1);
+					Object[] datosProducto = cnx.getDatosProducto(nombreProducto);
+					noProducto = (Integer) datosProducto[0];
+					nombreProducto = (String) datosProducto[1];
 					
 					if (noProducto == 0) {
 						JOptionPane.showMessageDialog(null, "Nombre de producto no válido", "Error", JOptionPane.ERROR_MESSAGE);
@@ -189,7 +190,11 @@ public class Ventas extends JFrame implements ActionListener {
 					
 				}
 				
-				cantidad = Integer.parseInt(tFCantidad.getText());
+				if(tFCantidad.getText().length() == 0)
+				    cantidad = 1;
+				else
+					cantidad = Integer.parseInt(tFCantidad.getText());
+				
 				int cantidadDisponible = cnx.getCantidadDisponible(noProducto);
 				
 				if(cantidadDisponible > 0) {
@@ -199,10 +204,11 @@ public class Ventas extends JFrame implements ActionListener {
 					    if(!estaEnLaLista(noProducto)) {
 					        precio = cnx.getPrecioProducto(noProducto);
 					        precio *= cantidad;
-					        Object[] row = { noProducto, nombreProducto, cantidad, precio };
+					        DecimalFormat df = new DecimalFormat("#.00");
+					        Object[] row = { noProducto, nombreProducto, cantidad, "$" + df.format(precio) };
 					        dtm.addRow(row);
 							totalVenta += precio;
-							lblTotalVenta.setText("Total $" + totalVenta);
+							lblTotalVenta.setText("Total $" + df.format(totalVenta));
 					        tFNoProducto.setText("");
 					        tFNombreProducto.setText("");
 					        tFCantidad.setText("");
