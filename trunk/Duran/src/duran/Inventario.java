@@ -1,7 +1,5 @@
 package duran;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -130,7 +128,7 @@ public class Inventario extends JFrame implements ActionListener {
 				dispose();
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(Inventario.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-cancel-4.png")));
+		//btnSalir.setIcon(new ImageIcon(Inventario.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-cancel-4.png")));
 		btnSalir.setBounds(284, 452, 107, 25);
 		contentPane.add(btnSalir);
 	}
