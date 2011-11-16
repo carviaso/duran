@@ -106,7 +106,7 @@ public class Menu {
 				System.exit(0);
 			}
 		});
-		btnSalir.setIcon(new ImageIcon(Menu.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-cancel-4.png")));
+		//btnSalir.setIcon(new ImageIcon(Menu.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-cancel-4.png")));
 		btnSalir.setBounds(302, 341, 107, 25);
 		frame.getContentPane().add(btnSalir);
 	}

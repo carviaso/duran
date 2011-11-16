@@ -1,7 +1,5 @@
 package duran;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -19,7 +17,6 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
-import java.util.Vector;
 
 import javax.swing.ListSelectionModel;
 
@@ -131,7 +128,7 @@ public class Ventas extends JFrame implements ActionListener {
 
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(this);
-		btnRegistrar.setIcon(new ImageIcon(Ventas.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-yes-4.png")));
+		//btnRegistrar.setIcon(new ImageIcon(Ventas.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-yes-4.png")));
 		btnRegistrar.setBounds(200, 422, 126, 25);
 		contentPane.add(btnRegistrar);
 
@@ -141,7 +138,7 @@ public class Ventas extends JFrame implements ActionListener {
 				dispose();
 			}
 		});
-		btnCancelar.setIcon(new ImageIcon(Ventas.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-no-4.png")));
+		//btnCancelar.setIcon(new ImageIcon(Ventas.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-no-4.png")));
 		btnCancelar.setBounds(375, 422, 126, 25);
 		contentPane.add(btnCancelar);
 	}
