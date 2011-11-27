@@ -201,7 +201,7 @@ public class Ventas extends JFrame implements ActionListener {
 					    if(!estaEnLaLista(noProducto)) {
 					        precio = cnx.getPrecioProducto(noProducto);
 					        precio *= cantidad;
-					        DecimalFormat df = new DecimalFormat("#.00");
+					        DecimalFormat df = new DecimalFormat("0.00");
 					        Object[] row = { noProducto, nombreProducto, cantidad, "$" + df.format(precio) };
 					        dtm.addRow(row);
 							totalVenta += precio;
@@ -231,8 +231,20 @@ public class Ventas extends JFrame implements ActionListener {
 		}
 		else if(arg0.getSource() == btnEliminar) {
 			
+			int row = 0;
+			
 			while(table.getSelectedRow() != -1) {
-			    dtm.removeRow(table.getSelectedRow());
+				row = table.getSelectedRow();
+				totalVenta -= Double.parseDouble(dtm.getValueAt(row, 3).toString().replace("$", ""));
+			    dtm.removeRow(row);
+			}
+			
+			if(totalVenta > 0) {
+				DecimalFormat df = new DecimalFormat("0.00");
+			    lblTotalVenta.setText("Total $" + df.format(totalVenta));
+			}
+			else {
+				lblTotalVenta.setText("Total $");
 			}
 			
 		}
