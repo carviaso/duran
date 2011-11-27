@@ -181,6 +181,30 @@ public class Conexion {
 		return productos;
 	}
 	
+	public Vector getAllProductos() {
+		int noProducto = 0, cantidad = 0;
+		String nombreProducto = null;
+		double precio = 0.0;
+		Vector productos = new Vector();
+		
+		try {
+			rs = st.executeQuery("SELECT idproducto, nombreproducto, precioporkilo, cantidad FROM inventario");
+			while(rs.next()) {
+			    noProducto = rs.getInt("idproducto");
+			    nombreProducto = rs.getString("nombreproducto");
+			    cantidad = rs.getInt("cantidad");
+			    precio = rs.getDouble("precioporkilo");
+			    DecimalFormat df = new DecimalFormat("#.00");
+			    productos.add(new Object [] {noProducto, nombreProducto, "$" + df.format(precio), cantidad});
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return productos;
+	}
+	
 	public void retirarDeInventario(int noProducto, int cantidad) {
 		try {
 			st.executeUpdate("UPDATE inventario SET cantidad = cantidad - " + cantidad + " WHERE idproducto = " + noProducto);

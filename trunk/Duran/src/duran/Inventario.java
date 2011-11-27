@@ -24,7 +24,7 @@ public class Inventario extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField tFNoProducto, tFNombreProducto, tFPrecio;
-	private JButton btnBuscarPorNumero, btnBuscarPorNombre, btnBuscarPorPrecio;
+	private JButton btnBuscarPorNumero, btnBuscarPorNombre, btnBuscarPorPrecio, btnMostrarTodo;
 	private JTable table;
 	private DefaultTableModel dtm;
 	
@@ -41,7 +41,7 @@ public class Inventario extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 773, 419);
+		panel.setBounds(0, 0, 773, 500);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -97,6 +97,11 @@ public class Inventario extends JFrame implements ActionListener {
 		btnBuscarPorPrecio.setBounds(525, 166, 114, 25);
 		panel.add(btnBuscarPorPrecio);
 		
+		btnMostrarTodo = new JButton("Mostrar Todo");
+		btnMostrarTodo.addActionListener(this);
+		btnMostrarTodo.setBounds(489, 400, 150, 25);
+		panel.add(btnMostrarTodo);
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(55, 215, 577, 177);
 		panel.add(scrollPane);
@@ -130,7 +135,16 @@ public class Inventario extends JFrame implements ActionListener {
 		});
 		//btnSalir.setIcon(new ImageIcon(Inventario.class.getResource("/com/sun/java/swing/plaf/gtk/resources/gtk-cancel-4.png")));
 		btnSalir.setBounds(284, 452, 107, 25);
-		contentPane.add(btnSalir);
+		panel.add(btnSalir);
+		limpiarTabla();
+    	Conexion cnx = new Conexion();
+    	Vector<Object[]> productos = cnx.getAllProductos();
+    		
+    	if(productos != null) {
+    		for(Object[] producto : productos) {
+        		dtm.addRow(producto);
+        	}	
+    	}
 	}
 	
 	public void limpiarTabla() {
@@ -196,6 +210,18 @@ public class Inventario extends JFrame implements ActionListener {
         	else {
         		JOptionPane.showMessageDialog(null, "Debes introducir el precio del producto", "Error", JOptionPane.ERROR_MESSAGE);
         	}
+        }
+        else if(e.getSource() == btnMostrarTodo) {
+        	limpiarTabla();
+        	Conexion cnx = new Conexion();
+        	Vector<Object[]> productos = cnx.getAllProductos();
+        		
+        	if(productos != null) {
+        		for(Object[] producto : productos) {
+            		dtm.addRow(producto);
+            	}	
+        	}
+        		
         }
 		
 	}
