@@ -1,0 +1,1 @@
+Esta es una aplicación desarrollada en Java y MySQL para llevar a cabo los procesos de ventas, cotizaciones y control de inventario de una forma más ágil
